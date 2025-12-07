@@ -17,8 +17,9 @@
 
     /* === SEARCH OVERLAY COLORS & OPACITY ===
        Change overlay transparency and panel colors here.
+       (Panel is see-through, results are opaque.)
     */
-    --search-panel-bg-color: rgba(255, 255, 255, 0.92);
+    --search-panel-bg-color: rgba(255, 255, 255, 0.7);
 }
 
 /* GENERAL */
@@ -512,7 +513,7 @@ footer {
     backdrop-filter: none;
 }
 
-/* === ART VIEWER SIZE TWEAKS === */
+/* === ART VIEWER SIZE & LAYOUT TWEAKS === */
 .art-viewer-panel {
     position: relative;
     margin: 30px;
@@ -520,7 +521,7 @@ footer {
     border-radius: 16px;
     box-shadow: 0 26px 70px rgba(15, 23, 42, 0.55);
     display: grid;
-    grid-template-columns: minmax(0, 3fr) minmax(0, 1.2fr);
+    grid-template-columns: minmax(0, 4fr) minmax(0, 1fr); /* big left, small right */
     gap: 24px;
     padding: 22px;
     max-height: calc(100vh - 60px);
@@ -528,7 +529,7 @@ footer {
     z-index: 1;
 }
 
-/* shared drag bar for floating windows */
+/* shared drag bar base (we drag from full panel via JS; bar is just visual if used) */
 .panel-drag-bar {
     height: 14px;
     border-radius: 999px;
@@ -554,20 +555,22 @@ footer {
     font-size: 22px;
 }
 
+/* image large and in top-left of the box */
 .art-main-image-wrapper {
     position: relative;
     border-radius: 12px;
     overflow: hidden;
     background: #0f172a;
     display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 320px;
+    align-items: flex-start;       /* top */
+    justify-content: flex-start;   /* left */
+    min-height: 360px;
 }
 
 .art-main-image-wrapper img {
-    max-width: 100%;
-    max-height: 72vh;
+    width: 100%;
+    height: auto;
+    max-height: 75vh;
     display: block;
 }
 
@@ -651,10 +654,10 @@ body.fullscreen-art .art-sidebar {
     display: none;
 }
 
-/* ART SIDEBAR */
+/* ART SIDEBAR (small column on the right) */
 .art-sidebar {
     border-left: 1px solid #e5e7eb;
-    padding-left: 12px;
+    padding-left: 10px;
     overflow-y: auto;
 }
 
@@ -874,6 +877,27 @@ body.fullscreen-art .art-sidebar {
     font-weight: 600;
 }
 
+/* BLOG FULLSCREEN BUTTON (bottom-right of panel) */
+.blog-fullscreen-btn {
+    position: absolute;
+    bottom: 14px;
+    right: 52px;
+    border: none;
+    border-radius: 999px;
+    background: rgba(15, 23, 42, 0.85);
+    color: #e5e7eb;
+    padding: 6px 10px;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    z-index: 3;
+}
+
+.blog-viewer-panel:hover .blog-fullscreen-btn,
+.blog-viewer-overlay.no-blur .blog-fullscreen-btn {
+    opacity: 1;
+}
+
 /* ========================= */
 /* SEARCH OVERLAY            */
 /* ========================= */
@@ -891,11 +915,11 @@ body.fullscreen-art .art-sidebar {
     display: flex;
 }
 
-/* panel slightly transparent; cards themselves opaque */
+/* panel slightly transparent; result cards themselves opaque */
 .search-overlay-panel {
     position: relative;
     margin: 40px;
-    background: var(--search-panel-bg-color);
+    background: var(--search-panel-bg-color); /* see-through */
     border-radius: 18px;
     box-shadow: 0 26px 70px rgba(15, 23, 42, 0.65);
     width: min(1100px, 100% - 60px);
@@ -975,7 +999,7 @@ body.fullscreen-art .art-sidebar {
     width: 100%;
     border-radius: 14px;
     border: none;
-    background: #f9fafb;
+    background: #f9fafb; /* opaque */
     padding: 14px 14px;
     text-align: left;
     cursor: pointer;
